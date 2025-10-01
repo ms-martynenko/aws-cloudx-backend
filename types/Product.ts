@@ -4,3 +4,8 @@ export interface Product {
 	description: string;
 	price: number;
 }
+
+export interface ProductStock {
+	product_id: Product["id"];
+	count: number;
+}
