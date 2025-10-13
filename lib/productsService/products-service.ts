@@ -1,7 +1,7 @@
 import { aws_apigateway, aws_dynamodb, aws_lambda, Duration } from "aws-cdk-lib";
 import path from "path";
 import { Construct } from "constructs";
-import { TABLE_NAMES } from "../../constants";
+import { FRONTEND_URL, TABLE_NAMES } from "../../constants";
 
 export class ProductsService extends Construct {
 	constructor(scope: Construct, id: string) {
@@ -71,7 +71,7 @@ export class ProductsService extends Construct {
 			restApiName: "Products API",
 			description: "APIs for products",
 			defaultCorsPreflightOptions: {
-				allowOrigins: ["https://d3nvqppy8bkguw.cloudfront.net"],
+				allowOrigins: [FRONTEND_URL],
 				allowMethods: ["GET", "POST", "OPTIONS"],
 				allowHeaders: ["Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"],
 			},

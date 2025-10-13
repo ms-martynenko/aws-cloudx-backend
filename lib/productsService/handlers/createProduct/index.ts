@@ -3,7 +3,7 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 import { v4 as uuidv4 } from "uuid";
 import Joi from "joi";
-import { createResponse } from "../utils";
+import { createResponse } from "../../../../utils";
 
 const client = new DynamoDBClient({ region: process.env.AWS_REGION });
 const dynamoDBDocClient = DynamoDBDocument.from(client);
