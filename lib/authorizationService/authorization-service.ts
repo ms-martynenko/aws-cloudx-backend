@@ -15,6 +15,10 @@ export class AuthorizationService extends Construct {
       timeout: Duration.seconds(10),
       handler: "index.main",
       code: aws_lambda.Code.fromAsset(join(__dirname, "../../dist/basicAuthorizer")),
+      environment: {
+        [process.env.GITHUB_USERNAME ?? "GITHUB_USERNAME"]:
+          process.env[process.env.GITHUB_USERNAME ?? "GITHUB_USERNAME"] ?? "fake_password",
+      },
     });
   }
 }
