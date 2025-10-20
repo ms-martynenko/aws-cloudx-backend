@@ -3,6 +3,7 @@ import {
 	aws_lambda,
 	aws_s3,
 	aws_s3_notifications,
+	aws_sqs,
 	Duration,
 	RemovalPolicy,
 } from "aws-cdk-lib";
@@ -11,8 +12,12 @@ import { FRONTEND_URL, PARSED_FOLDER, UPLOADED_FOLDER } from "../../constants";
 import path from "path";
 import { HttpMethods } from "aws-cdk-lib/aws-s3";
 
+export interface ImportServiceProps {
+	catalogItemsQueue: aws_sqs.Queue;
+}
+
 export class ImportService extends Construct {
-	constructor(scope: Construct, id: string) {
+	constructor(scope: Construct, id: string, props: ImportServiceProps) {
 		super(scope, id);
 
 		const s3Bucket = new aws_s3.Bucket(this, "ImportBucket", {
@@ -26,8 +31,6 @@ export class ImportService extends Construct {
 				},
 			],
 		});
-
-		s3Bucket.addCorsRule;
 
 		const lambdaImportProductsFile = new aws_lambda.Function(this, "importProductsFile", {
 			runtime: aws_lambda.Runtime.NODEJS_20_X,
@@ -48,14 +51,16 @@ export class ImportService extends Construct {
 			handler: "index.main",
 			code: aws_lambda.Code.fromAsset(path.join(__dirname, "../../dist/importFileParser")),
 			environment: {
-				BUCKET_NAME: s3Bucket.bucketName,
 				UPLOADED_PREFIX: UPLOADED_FOLDER,
 				PARSED_PREFIX: PARSED_FOLDER,
+				SQS_QUEUE_URL: props.catalogItemsQueue.queueUrl,
 			},
 		});
 
 		s3Bucket.grantPut(lambdaImportProductsFile);
 		s3Bucket.grantReadWrite(lambdaImportFileParser);
+		props.catalogItemsQueue.grantSendMessages(lambdaImportFileParser);
+
 		s3Bucket.addEventNotification(
 			aws_s3.EventType.OBJECT_CREATED,
 			new aws_s3_notifications.LambdaDestination(lambdaImportFileParser),
