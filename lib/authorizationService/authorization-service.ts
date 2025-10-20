@@ -15,9 +15,6 @@ export class AuthorizationService extends Construct {
       timeout: Duration.seconds(10),
       handler: "index.main",
       code: aws_lambda.Code.fromAsset(join(__dirname, "../../dist/basicAuthorizer")),
-      environment: {
-        GITHUB_USERNAME: process.env.GITHUB_USERNAME ?? "",
-      },
     });
   }
 }
