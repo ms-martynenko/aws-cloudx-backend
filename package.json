@@ -1,45 +1,47 @@
 {
-	"name": "infra",
-	"version": "0.1.0",
-	"bin": {
-		"infra": "bin/infra.js"
-	},
-	"scripts": {
-		"build:products": "esbuild lib/productsService/handlers/*/index.ts --bundle --platform=node --external:@aws-sdk --target=node20 --outdir=dist --outbase=lib/productsService/handlers",
-		"build:import": "esbuild lib/importService/handlers/*/index.ts --bundle --platform=node --external:@aws-sdk --target=node20 --outdir=dist --outbase=lib/importService/handlers",
-		"build:all": "npm run build:products && npm run build:import",
-		"infra:synth": "npm run build:all && cdk synth",
-		"infra:deploy": "npm run infra:synth && cdk deploy --all",
-		"tables:seed": "ts-node scripts/seed.ts",
-		"build": "tsc",
-		"watch": "tsc -w",
-		"test": "jest",
-		"cdk": "cdk"
-	},
-	"devDependencies": {
-		"@types/aws-lambda": "^8.10.152",
-		"@types/jest": "^29.5.14",
-		"@types/node": "22.7.9",
-		"aws-cdk": "2.1029.2",
-		"esbuild": "^0.25.10",
-		"jest": "^29.7.0",
-		"ts-jest": "^29.2.5",
-		"ts-node": "^10.9.2",
-		"typescript": "~5.6.3"
-	},
-	"dependencies": {
-		"@aws-sdk/client-dynamodb": "^3.896.0",
-		"@aws-sdk/client-s3": "^3.901.0",
-		"@aws-sdk/client-sns": "^3.908.0",
-		"@aws-sdk/client-sqs": "^3.908.0",
-		"@aws-sdk/lib-dynamodb": "^3.899.0",
-		"@aws-sdk/s3-request-presigner": "^3.901.0",
-		"@types/uuid": "^10.0.0",
-		"aws-cdk-lib": "2.214.0",
-		"aws-lambda": "^1.0.7",
-		"constructs": "^10.0.0",
-		"csv-parser": "^3.2.0",
-		"joi": "^18.0.1",
-		"uuid": "^13.0.0"
-	}
+  "name": "infra",
+  "version": "0.1.0",
+  "bin": {
+    "infra": "bin/infra.js"
+  },
+  "scripts": {
+    "build:products": "esbuild lib/productsService/handlers/*/index.ts --bundle --platform=node --external:@aws-sdk --target=node20 --outdir=dist --outbase=lib/productsService/handlers",
+    "build:import": "esbuild lib/importService/handlers/*/index.ts --bundle --platform=node --external:@aws-sdk --target=node20 --outdir=dist --outbase=lib/importService/handlers",
+    "build:auth": "esbuild lib/authorizationService/handlers/*/index.ts --bundle --platform=node --external:@aws-sdk --target=node20 --outdir=dist --outbase=lib/authorizationService/handlers",
+    "build:all": "npm run build:products && npm run build:import && npm run build:auth",
+    "infra:synth": "npm run build:all && cdk synth",
+    "infra:deploy": "npm run infra:synth && cdk deploy --all",
+    "tables:seed": "ts-node scripts/seed.ts",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.152",
+    "@types/jest": "^29.5.14",
+    "@types/node": "22.7.9",
+    "aws-cdk": "2.1029.2",
+    "dotenv": "^17.2.3",
+    "esbuild": "^0.25.10",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.6.3"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.896.0",
+    "@aws-sdk/client-s3": "^3.901.0",
+    "@aws-sdk/client-sns": "^3.908.0",
+    "@aws-sdk/client-sqs": "^3.908.0",
+    "@aws-sdk/lib-dynamodb": "^3.899.0",
+    "@aws-sdk/s3-request-presigner": "^3.901.0",
+    "@types/uuid": "^10.0.0",
+    "aws-cdk-lib": "2.214.0",
+    "aws-lambda": "^1.0.7",
+    "constructs": "^10.0.0",
+    "csv-parser": "^3.2.0",
+    "joi": "^18.0.1",
+    "uuid": "^13.0.0"
+  }
 }
